@@ -18,14 +18,24 @@ const Hero = () => {
     }
   };
 
+  const handleHowItWorks = () => {
+    // Scroll to how it works section
+    const howItWorksSection = document.getElementById('how-it-works');
+    if (howItWorksSection) {
+      howItWorksSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50">
       {/* Navigation */}
       <nav className="flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">✨</span>
-          </div>
+        <div className="flex items-center space-x-3">
+          <img 
+            src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
+            alt="Sparklean Logo" 
+            className="w-10 h-10"
+          />
           <span className="text-xl font-bold text-gray-900">Sparklean</span>
         </div>
         <div className="flex items-center space-x-4">
@@ -34,7 +44,11 @@ const Hero = () => {
               Welcome, {user.user_metadata?.full_name || user.email}
             </span>
           )}
-          <Button variant="ghost" className="text-gray-600 hover:text-teal-600">
+          <Button 
+            variant="ghost" 
+            className="text-gray-600 hover:text-teal-600"
+            onClick={() => navigate('/for-cleaners')}
+          >
             For Cleaners
           </Button>
           <Button 
@@ -69,7 +83,12 @@ const Hero = () => {
                 Book Your First Clean
                 <span className="ml-2">→</span>
               </Button>
-              <Button size="lg" variant="outline" className="border-teal-200 text-teal-700 hover:bg-teal-50 px-8 py-4 text-lg">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-teal-200 text-teal-700 hover:bg-teal-50 px-8 py-4 text-lg"
+                onClick={handleHowItWorks}
+              >
                 How It Works
               </Button>
             </div>
@@ -138,6 +157,42 @@ const Hero = () => {
                 Get Started Now
               </Button>
             </Card>
+          </div>
+        </div>
+      </div>
+
+      {/* How It Works Section */}
+      <div id="how-it-works" className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">How Sparklean Works</h2>
+            <p className="text-xl text-gray-600">Simple, fast, and reliable cleaning services</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">🧽</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Service Selection</h3>
+              <p className="text-gray-600">Choose from various cleaning packages with transparent pricing. Standard, deep clean, move-in/out, and post-construction options available.</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">📅</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Booking</h3>
+              <p className="text-gray-600">Schedule your cleaning in just a few simple steps. Pick your date, time, and any extras. Secure payment processing included.</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">📍</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Live Tracking</h3>
+              <p className="text-gray-600">Track your cleaner's location and service progress in real-time. Get updates and notifications throughout the cleaning process.</p>
+            </div>
           </div>
         </div>
       </div>
