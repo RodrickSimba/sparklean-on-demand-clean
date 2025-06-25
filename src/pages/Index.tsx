@@ -6,9 +6,33 @@ import BookingFlow from '../components/BookingFlow';
 import TrackingMap from '../components/TrackingMap';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Index = () => {
   const [currentView, setCurrentView] = useState('home');
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Handle URL-based routing
+  React.useEffect(() => {
+    const path = location.pathname;
+    if (path === '/services') {
+      setCurrentView('services');
+    } else if (path === '/booking') {
+      setCurrentView('booking');
+    } else if (path === '/tracking') {
+      setCurrentView('tracking');
+    } else {
+      setCurrentView('home');
+    }
+  }, [location]);
+
+  const handleViewChange = (view: string) => {
+    setCurrentView(view);
+    navigate(view === 'home' ? '/' : `/${view}`);
+  };
 
   const renderView = () => {
     switch (currentView) {
@@ -30,7 +54,7 @@ const Index = () => {
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <Button 
               variant="ghost" 
-              onClick={() => setCurrentView('home')}
+              onClick={() => handleViewChange('home')}
               className="text-teal-600 hover:text-teal-700"
             >
               ← Back to Home
@@ -39,22 +63,24 @@ const Index = () => {
             <div className="flex space-x-4">
               <Button
                 variant={currentView === 'services' ? 'default' : 'ghost'}
-                onClick={() => setCurrentView('services')}
+                onClick={() => handleViewChange('services')}
                 className={currentView === 'services' ? 'bg-teal-600 text-white' : ''}
               >
                 Services
               </Button>
               <Button
                 variant={currentView === 'booking' ? 'default' : 'ghost'}
-                onClick={() => setCurrentView('booking')}
+                onClick={() => handleViewChange('booking')}
                 className={currentView === 'booking' ? 'bg-teal-600 text-white' : ''}
+                disabled={!user}
               >
                 Booking
               </Button>
               <Button
                 variant={currentView === 'tracking' ? 'default' : 'ghost'}
-                onClick={() => setCurrentView('tracking')}
+                onClick={() => handleViewChange('tracking')}
                 className={currentView === 'tracking' ? 'bg-teal-600 text-white' : ''}
+                disabled={!user}
               >
                 Track Service
               </Button>
@@ -77,7 +103,7 @@ const Index = () => {
             <div className="grid md:grid-cols-3 gap-6">
               <Card 
                 className="p-6 cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setCurrentView('services')}
+                onClick={() => handleViewChange('services')}
               >
                 <div className="text-center">
                   <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -89,28 +115,32 @@ const Index = () => {
               </Card>
 
               <Card 
-                className="p-6 cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setCurrentView('booking')}
+                className={`p-6 cursor-pointer hover:shadow-lg transition-shadow ${!user ? 'opacity-50' : ''}`}
+                onClick={() => user ? handleViewChange('booking') : navigate('/auth')}
               >
                 <div className="text-center">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">📅</span>
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">Easy Booking</h3>
-                  <p className="text-sm text-gray-600">Schedule your cleaning in just a few simple steps</p>
+                  <p className="text-sm text-gray-600">
+                    {user ? 'Schedule your cleaning in just a few simple steps' : 'Sign in to schedule your cleaning'}
+                  </p>
                 </div>
               </Card>
 
               <Card 
-                className="p-6 cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setCurrentView('tracking')}
+                className={`p-6 cursor-pointer hover:shadow-lg transition-shadow ${!user ? 'opacity-50' : ''}`}
+                onClick={() => user ? handleViewChange('tracking') : navigate('/auth')}
               >
                 <div className="text-center">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <span className="text-2xl">📍</span>
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">Live Tracking</h3>
-                  <p className="text-sm text-gray-600">Track your cleaner's location and service progress in real-time</p>
+                  <p className="text-sm text-gray-600">
+                    {user ? 'Track your cleaner\'s location and service progress in real-time' : 'Sign in to track your cleaners'}
+                  </p>
                 </div>
               </Card>
             </div>

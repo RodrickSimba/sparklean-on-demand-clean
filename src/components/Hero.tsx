@@ -3,8 +3,21 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Star, Clock, MapPin, Shield } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAuthAction = () => {
+    if (user) {
+      signOut();
+    } else {
+      navigate('/auth');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50">
       {/* Navigation */}
@@ -16,11 +29,19 @@ const Hero = () => {
           <span className="text-xl font-bold text-gray-900">Sparklean</span>
         </div>
         <div className="flex items-center space-x-4">
+          {user && (
+            <span className="text-gray-600">
+              Welcome, {user.user_metadata?.full_name || user.email}
+            </span>
+          )}
           <Button variant="ghost" className="text-gray-600 hover:text-teal-600">
             For Cleaners
           </Button>
-          <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-            Book Now
+          <Button 
+            className="bg-teal-600 hover:bg-teal-700 text-white"
+            onClick={handleAuthAction}
+          >
+            {user ? 'Sign Out' : 'Sign In'}
           </Button>
         </div>
       </nav>
@@ -40,7 +61,11 @@ const Hero = () => {
               track in real-time, and enjoy a pristine home without the hassle.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button size="lg" className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 text-lg">
+              <Button 
+                size="lg" 
+                className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-4 text-lg"
+                onClick={() => navigate('/services')}
+              >
                 Book Your First Clean
                 <span className="ml-2">→</span>
               </Button>
@@ -106,7 +131,10 @@ const Hero = () => {
                 </div>
               </div>
               
-              <Button className="w-full mt-8 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white py-4 text-lg">
+              <Button 
+                className="w-full mt-8 bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white py-4 text-lg"
+                onClick={() => navigate('/services')}
+              >
                 Get Started Now
               </Button>
             </Card>

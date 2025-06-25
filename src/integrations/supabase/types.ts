@@ -9,7 +9,304 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      booking_extras: {
+        Row: {
+          booking_id: string
+          extra_id: string
+          id: string
+          quantity: number | null
+        }
+        Insert: {
+          booking_id: string
+          extra_id: string
+          id?: string
+          quantity?: number | null
+        }
+        Update: {
+          booking_id?: string
+          extra_id?: string
+          id?: string
+          quantity?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_extras_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_extras_extra_id_fkey"
+            columns: ["extra_id"]
+            isOneToOne: false
+            referencedRelation: "service_extras"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          address: string
+          cleaner_id: string | null
+          created_at: string | null
+          customer_id: string
+          id: string
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          special_instructions: string | null
+          status: Database["public"]["Enums"]["booking_status"] | null
+          total_price: number
+          updated_at: string | null
+        }
+        Insert: {
+          address: string
+          cleaner_id?: string | null
+          created_at?: string | null
+          customer_id: string
+          id?: string
+          scheduled_date: string
+          scheduled_time: string
+          service_id: string
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["booking_status"] | null
+          total_price: number
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string
+          cleaner_id?: string | null
+          created_at?: string | null
+          customer_id?: string
+          id?: string
+          scheduled_date?: string
+          scheduled_time?: string
+          service_id?: string
+          special_instructions?: string | null
+          status?: Database["public"]["Enums"]["booking_status"] | null
+          total_price?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_cleaner_id_fkey"
+            columns: ["cleaner_id"]
+            isOneToOne: false
+            referencedRelation: "cleaner_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cleaner_profiles: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          experience_years: number | null
+          hourly_rate: number | null
+          id: string
+          location_lat: number | null
+          location_lng: number | null
+          rating: number | null
+          status: Database["public"]["Enums"]["cleaner_status"] | null
+          total_jobs: number | null
+          verified: boolean | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id: string
+          location_lat?: number | null
+          location_lng?: number | null
+          rating?: number | null
+          status?: Database["public"]["Enums"]["cleaner_status"] | null
+          total_jobs?: number | null
+          verified?: boolean | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          experience_years?: number | null
+          hourly_rate?: number | null
+          id?: string
+          location_lat?: number | null
+          location_lng?: number | null
+          rating?: number | null
+          status?: Database["public"]["Enums"]["cleaner_status"] | null
+          total_jobs?: number | null
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cleaner_profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          booking_id: string
+          cleaner_id: string
+          comment: string | null
+          created_at: string | null
+          customer_id: string
+          id: string
+          rating: number
+        }
+        Insert: {
+          booking_id: string
+          cleaner_id: string
+          comment?: string | null
+          created_at?: string | null
+          customer_id: string
+          id?: string
+          rating: number
+        }
+        Update: {
+          booking_id?: string
+          cleaner_id?: string
+          comment?: string | null
+          created_at?: string | null
+          customer_id?: string
+          id?: string
+          rating?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_cleaner_id_fkey"
+            columns: ["cleaner_id"]
+            isOneToOne: false
+            referencedRelation: "cleaner_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_extras: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          price: number
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price: number
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price?: number
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          base_price: number
+          created_at: string | null
+          description: string | null
+          duration_hours: number
+          id: string
+          is_active: boolean | null
+          name: string
+          service_type: Database["public"]["Enums"]["service_type"]
+        }
+        Insert: {
+          base_price: number
+          created_at?: string | null
+          description?: string | null
+          duration_hours: number
+          id?: string
+          is_active?: boolean | null
+          name: string
+          service_type: Database["public"]["Enums"]["service_type"]
+        }
+        Update: {
+          base_price?: number
+          created_at?: string | null
+          description?: string | null
+          duration_hours?: number
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          service_type?: Database["public"]["Enums"]["service_type"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +315,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      booking_status:
+        | "pending"
+        | "confirmed"
+        | "in_progress"
+        | "completed"
+        | "cancelled"
+      cleaner_status: "available" | "busy" | "offline"
+      service_type: "standard" | "deep" | "move" | "construction"
+      user_role: "customer" | "cleaner" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +438,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      booking_status: [
+        "pending",
+        "confirmed",
+        "in_progress",
+        "completed",
+        "cancelled",
+      ],
+      cleaner_status: ["available", "busy", "offline"],
+      service_type: ["standard", "deep", "move", "construction"],
+      user_role: ["customer", "cleaner", "admin"],
+    },
   },
 } as const

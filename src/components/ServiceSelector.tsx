@@ -3,61 +3,29 @@ import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-
-interface Service {
-  id: string;
-  name: string;
-  description: string;
-  duration: string;
-  price: number;
-  popular?: boolean;
-}
-
-const services: Service[] = [
-  {
-    id: 'standard',
-    name: 'Standard Clean',
-    description: 'Regular maintenance cleaning for your home',
-    duration: '2-3 hours',
-    price: 299,
-    popular: true
-  },
-  {
-    id: 'deep',
-    name: 'Deep Clean',
-    description: 'Thorough cleaning including baseboards, inside appliances',
-    duration: '4-6 hours',
-    price: 599
-  },
-  {
-    id: 'move',
-    name: 'Move In/Out',
-    description: 'Complete cleaning for moving situations',
-    duration: '3-5 hours',
-    price: 499
-  },
-  {
-    id: 'construction',
-    name: 'Post-Construction',
-    description: 'Specialized cleaning after renovations',
-    duration: '4-8 hours',
-    price: 799
-  }
-];
+import { useServices, useServiceExtras } from '@/hooks/useServices';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ServiceSelector = () => {
-  const [selectedService, setSelectedService] = useState<string>('standard');
+  const { data: services = [], isLoading: servicesLoading } = useServices();
+  const { data: extras = [], isLoading: extrasLoading } = useServiceExtras();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  
+  const [selectedService, setSelectedService] = useState<string>('');
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
-  const extras = [
-    { id: 'windows', name: 'Window Cleaning', price: 80 },
-    { id: 'fridge', name: 'Inside Fridge', price: 50 },
-    { id: 'oven', name: 'Inside Oven', price: 60 },
-    { id: 'garage', name: 'Garage', price: 120 }
-  ];
+  React.useEffect(() => {
+    if (services.length > 0 && !selectedService) {
+      // Auto-select the first service (Standard Clean)
+      const standardService = services.find(s => s.service_type === 'standard') || services[0];
+      setSelectedService(standardService.id);
+    }
+  }, [services, selectedService]);
 
   const selectedServiceData = services.find(s => s.id === selectedService);
-  const totalPrice = (selectedServiceData?.price || 0) + 
+  const totalPrice = (selectedServiceData?.base_price || 0) + 
     selectedExtras.reduce((sum, extraId) => {
       const extra = extras.find(e => e.id === extraId);
       return sum + (extra?.price || 0);
@@ -70,6 +38,33 @@ const ServiceSelector = () => {
         : [...prev, extraId]
     );
   };
+
+  const handleContinue = () => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    
+    // Store selected service and extras in localStorage for the booking flow
+    localStorage.setItem('selectedService', JSON.stringify({
+      service: selectedServiceData,
+      extras: selectedExtras.map(id => extras.find(e => e.id === id)).filter(Boolean),
+      totalPrice
+    }));
+    
+    navigate('/booking');
+  };
+
+  if (servicesLoading || extrasLoading) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading services...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -90,15 +85,15 @@ const ServiceSelector = () => {
             }`}
             onClick={() => setSelectedService(service.id)}
           >
-            {service.popular && (
+            {service.service_type === 'standard' && (
               <Badge className="absolute -top-2 -right-2 bg-teal-600 text-white">
                 Popular
               </Badge>
             )}
             <h3 className="font-semibold text-gray-900 mb-2">{service.name}</h3>
             <p className="text-sm text-gray-600 mb-3">{service.description}</p>
-            <div className="text-sm text-gray-500 mb-3">⏱️ {service.duration}</div>
-            <div className="text-2xl font-bold text-teal-600">R{service.price}</div>
+            <div className="text-sm text-gray-500 mb-3">⏱️ {service.duration_hours} hours</div>
+            <div className="text-2xl font-bold text-teal-600">R{service.base_price}</div>
           </Card>
         ))}
       </div>
@@ -134,8 +129,11 @@ const ServiceSelector = () => {
             <div className="text-sm text-gray-500">Total price</div>
           </div>
         </div>
-        <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-4 text-lg">
-          Continue to Booking
+        <Button 
+          className="w-full bg-teal-600 hover:bg-teal-700 text-white py-4 text-lg"
+          onClick={handleContinue}
+        >
+          {user ? 'Continue to Booking' : 'Sign In to Continue'}
         </Button>
       </Card>
     </div>

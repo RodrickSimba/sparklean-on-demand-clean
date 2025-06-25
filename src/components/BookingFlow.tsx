@@ -1,10 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Calendar, Clock, MapPin, CreditCard } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCreateBooking } from '@/hooks/useBookings';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const BookingFlow = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -15,6 +19,27 @@ const BookingFlow = () => {
     frequency: 'once',
     specialInstructions: ''
   });
+  const [selectedBooking, setSelectedBooking] = useState<any>(null);
+  
+  const { user } = useAuth();
+  const createBooking = useCreateBooking();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+
+    // Load selected service from localStorage
+    const savedBooking = localStorage.getItem('selectedService');
+    if (savedBooking) {
+      setSelectedBooking(JSON.parse(savedBooking));
+    } else {
+      navigate('/services');
+    }
+  }, [user, navigate]);
 
   const steps = [
     { id: 1, title: 'Location', icon: MapPin },
@@ -41,6 +66,49 @@ const BookingFlow = () => {
   const prevStep = () => {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
+
+  const handleBookingSubmit = async () => {
+    if (!selectedBooking || !user) return;
+
+    try {
+      await createBooking.mutateAsync({
+        service_id: selectedBooking.service.id,
+        scheduled_date: bookingData.date,
+        scheduled_time: bookingData.time,
+        address: bookingData.address,
+        special_instructions: bookingData.specialInstructions,
+        total_price: selectedBooking.totalPrice,
+        extras: selectedBooking.extras.map((e: any) => e.id)
+      });
+
+      // Clear localStorage
+      localStorage.removeItem('selectedService');
+      
+      toast({
+        title: "Booking confirmed!",
+        description: "Your cleaning service has been booked successfully.",
+      });
+      
+      navigate('/');
+    } catch (error) {
+      toast({
+        title: "Booking failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (!selectedBooking) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading booking details...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -136,32 +204,6 @@ const BookingFlow = () => {
                 </div>
               </div>
             </div>
-
-            <div>
-              <Label>Frequency</Label>
-              <div className="grid md:grid-cols-4 gap-4 mt-2">
-                {frequencies.map((freq) => (
-                  <Card
-                    key={freq.id}
-                    className={`p-4 cursor-pointer transition-all ${
-                      bookingData.frequency === freq.id 
-                        ? 'ring-2 ring-teal-500 bg-teal-50' 
-                        : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setBookingData({...bookingData, frequency: freq.id})}
-                  >
-                    <div className="text-center">
-                      <div className="font-semibold text-gray-900">{freq.label}</div>
-                      {freq.discount > 0 && (
-                        <div className="text-sm text-green-600 font-medium">
-                          Save {freq.discount}%
-                        </div>
-                      )}
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
           </div>
         )}
 
@@ -174,16 +216,18 @@ const BookingFlow = () => {
               <h3 className="font-semibold text-gray-900 mb-4">Booking Summary</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span>Standard Clean</span>
-                  <span>R299</span>
+                  <span>{selectedBooking.service.name}</span>
+                  <span>R{selectedBooking.service.base_price}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Service Fee</span>
-                  <span>R29</span>
-                </div>
+                {selectedBooking.extras.map((extra: any) => (
+                  <div key={extra.id} className="flex justify-between">
+                    <span>{extra.name}</span>
+                    <span>R{extra.price}</span>
+                  </div>
+                ))}
                 <div className="border-t pt-2 flex justify-between font-semibold">
                   <span>Total</span>
-                  <span>R328</span>
+                  <span>R{selectedBooking.totalPrice}</span>
                 </div>
               </div>
             </div>
@@ -224,10 +268,11 @@ const BookingFlow = () => {
             Previous
           </Button>
           <Button 
-            onClick={currentStep === 3 ? () => console.log('Booking confirmed!') : nextStep}
+            onClick={currentStep === 3 ? handleBookingSubmit : nextStep}
             className="bg-teal-600 hover:bg-teal-700 text-white"
+            disabled={createBooking.isPending}
           >
-            {currentStep === 3 ? 'Confirm Booking' : 'Next Step'}
+            {currentStep === 3 ? (createBooking.isPending ? 'Processing...' : 'Confirm Booking') : 'Next Step'}
           </Button>
         </div>
       </Card>
