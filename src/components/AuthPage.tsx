@@ -7,13 +7,16 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import RoleSelection from './RoleSelection';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showRoleSelection, setShowRoleSelection] = useState(false);
   
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -48,9 +51,10 @@ const AuthPage = () => {
             variant: "destructive",
           });
         } else {
+          setShowRoleSelection(true);
           toast({
             title: "Account created!",
-            description: "Please check your email to verify your account.",
+            description: "Please select your role to continue.",
           });
         }
       }
@@ -65,15 +69,21 @@ const AuthPage = () => {
     }
   };
 
+  if (showRoleSelection) {
+    return <RoleSelection />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50 flex items-center justify-center p-6">
       <Card className="w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">✨</span>
-            </div>
-            <span className="text-xl font-bold text-gray-900">Sparklean</span>
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <img 
+              src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
+              alt="Sparklean Logo" 
+              className="w-12 h-12 object-contain"
+            />
+            <span className="text-2xl font-bold text-gray-900">Sparklean</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             {isLogin ? 'Welcome back' : 'Create account'}
@@ -85,18 +95,31 @@ const AuthPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                className="mt-1"
-                placeholder="Enter your full name"
-              />
-            </div>
+            <>
+              <div>
+                <Label htmlFor="fullName">Full Name</Label>
+                <Input
+                  id="fullName"
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  className="mt-1"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone (Optional)</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="mt-1"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            </>
           )}
           
           <div>

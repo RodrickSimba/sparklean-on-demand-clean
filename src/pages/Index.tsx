@@ -110,7 +110,7 @@ const Index = () => {
                     <span className="text-2xl">🧽</span>
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">Service Selection</h3>
-                  <p className="text-sm text-gray-600">Choose from various cleaning packages with transparent pricing</p>
+                  <p className="text-sm text-gray-600">Choose from various cleaning packages with transparent pricing and flexible scheduling options</p>
                 </div>
               </Card>
 
@@ -124,7 +124,7 @@ const Index = () => {
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">Easy Booking</h3>
                   <p className="text-sm text-gray-600">
-                    {user ? 'Schedule your cleaning in just a few simple steps' : 'Sign in to schedule your cleaning'}
+                    {user ? 'Schedule your cleaning in just a few simple steps with instant confirmation' : 'Sign in to schedule your cleaning'}
                   </p>
                 </div>
               </Card>
@@ -139,7 +139,7 @@ const Index = () => {
                   </div>
                   <h3 className="font-semibold text-gray-900 mb-2">Live Tracking</h3>
                   <p className="text-sm text-gray-600">
-                    {user ? 'Track your cleaner\'s location and service progress in real-time' : 'Sign in to track your cleaners'}
+                    {user ? 'Track your cleaner\'s location and service progress in real-time with ETA updates' : 'Sign in to track your cleaners'}
                   </p>
                 </div>
               </Card>

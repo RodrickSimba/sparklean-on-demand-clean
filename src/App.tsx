@@ -8,6 +8,10 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import AuthPage from "./components/AuthPage";
 import ForCleaners from "./pages/ForCleaners";
+import Dashboard from "./components/Dashboard";
+import CleanerDashboard from "./components/CleanerDashboard";
+import PaymentPage from "./components/PaymentPage";
+import NotificationCenter from "./components/NotificationCenter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +27,10 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/for-cleaners" element={<ForCleaners />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/cleaner-dashboard" element={<CleanerDashboard />} />
+            <Route path="/payments" element={<PaymentPage />} />
+            <Route path="/notifications" element={<NotificationCenter />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
