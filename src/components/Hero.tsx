@@ -40,7 +40,6 @@ const Hero = () => {
           <a href="/for-cleaners" className="text-gray-600 hover:text-teal-600">For Cleaners</a>
           {user ? (
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {user.user_metadata?.full_name || 'User'}</span>
               <Button onClick={() => navigate('/dashboard')} variant="outline">Dashboard</Button>
             </div>
           ) : (

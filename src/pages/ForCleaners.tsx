@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { DollarSign, Calendar, Star, MapPin, Shield, Users } from 'lucide-react';
+import { DollarSign, Calendar, Star, MapPin, Shield, Users, ArrowLeft } from 'lucide-react';
 
 const ForCleaners = () => {
   const navigate = useNavigate();
@@ -78,28 +79,30 @@ const ForCleaners = () => {
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-blue-50">
       {/* Navigation */}
       <nav className="flex items-center justify-between p-6 max-w-6xl mx-auto">
-        <div className="flex items-center space-x-3">
-          <img 
-            src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
-            alt="Sparklean Logo" 
-            className="w-20 h-20 object-contain"
-          />
-          <span className="text-2xl font-bold text-gray-900">Sparklean</span>
-        </div>
         <div className="flex items-center space-x-4">
           <Button 
-            onClick={() => navigate('/')}
+            onClick={() => navigate(-1)} 
             variant="ghost" 
-            className="text-gray-600 hover:text-teal-600"
+            className="text-teal-600 hover:text-teal-700 p-2"
           >
-            Back to Home
+            <ArrowLeft className="w-5 h-5" />
           </Button>
+          <div className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
+              alt="Sparklean Logo" 
+              className="w-16 h-16 object-contain"
+            />
+            <span className="text-2xl font-bold text-gray-900">Sparklean</span>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
           <Button 
             onClick={() => navigate('/auth', { state: { redirectTo: '/cleaner-setup' } })} 
             variant="outline" 
             className="border-teal-600 text-teal-600 hover:bg-teal-50"
           >
-            Sign In / Login
+            Sign In
           </Button>
           <Button 
             onClick={() => navigate('/auth', { state: { redirectTo: '/cleaner-setup' } })} 

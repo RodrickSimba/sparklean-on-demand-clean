@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBookings } from '@/hooks/useBookings';
-import { CreditCard, Calendar, CheckCircle } from 'lucide-react';
+import { CreditCard, Calendar, CheckCircle, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentPage = () => {
   const { user } = useAuth();
   const { data: bookings = [] } = useBookings();
-  const [selectedMethod, setSelectedMethod] = useState<'card' | 'paypal'>('card');
+  const [selectedMethod, setSelectedMethod] = useState<'card' | 'paypal' | 'ozow' | 'payshap'>('card');
+  const navigate = useNavigate();
 
   const completedBookings = bookings.filter((booking: any) => booking.status === 'completed');
   const pendingPayments = bookings.filter((booking: any) => booking.status === 'confirmed' || booking.status === 'in_progress');
@@ -22,6 +24,13 @@ const PaymentPage = () => {
       <div className="bg-white shadow-sm">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center space-x-3">
+            <Button 
+              onClick={() => navigate(-1)} 
+              variant="ghost" 
+              className="text-teal-600 hover:text-teal-700 p-2"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
             <img 
               src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
               alt="Sparklean Logo" 
@@ -69,6 +78,40 @@ const PaymentPage = () => {
                 </div>
               </div>
             </div>
+
+            <div 
+              className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                selectedMethod === 'ozow' ? 'border-teal-500 bg-teal-50' : 'border-gray-200'
+              }`}
+              onClick={() => setSelectedMethod('ozow')}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-6 h-6 bg-orange-500 rounded flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">O</span>
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">Ozow</h3>
+                  <p className="text-sm text-gray-600">Instant EFT payments</p>
+                </div>
+              </div>
+            </div>
+
+            <div 
+              className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                selectedMethod === 'payshap' ? 'border-teal-500 bg-teal-50' : 'border-gray-200'
+              }`}
+              onClick={() => setSelectedMethod('payshap')}
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-6 h-6 bg-green-600 rounded flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">P</span>
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">PayShap</h3>
+                  <p className="text-sm text-gray-600">QR code payments</p>
+                </div>
+              </div>
+            </div>
           </div>
 
           {selectedMethod === 'card' && (
@@ -111,6 +154,24 @@ const PaymentPage = () => {
               </div>
               <Button className="bg-teal-600 hover:bg-teal-700 text-white">
                 Save Payment Method
+              </Button>
+            </div>
+          )}
+
+          {selectedMethod === 'ozow' && (
+            <div className="text-center py-4">
+              <p className="text-gray-600 mb-4">You will be redirected to Ozow to complete your payment securely.</p>
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+                Pay with Ozow
+              </Button>
+            </div>
+          )}
+
+          {selectedMethod === 'payshap' && (
+            <div className="text-center py-4">
+              <p className="text-gray-600 mb-4">Scan the QR code with your PayShap app to complete payment.</p>
+              <Button className="bg-green-600 hover:bg-green-700 text-white">
+                Generate PayShap QR Code
               </Button>
             </div>
           )}
