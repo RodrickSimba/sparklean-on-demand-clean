@@ -66,7 +66,7 @@ const RoleSelection = () => {
             <img 
               src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
               alt="Sparklean Logo" 
-              className="w-12 h-12 object-contain"
+              className="w-16 h-16 object-contain"
             />
             <span className="text-2xl font-bold text-gray-900">Sparklean</span>
           </div>

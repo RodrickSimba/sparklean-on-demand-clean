@@ -67,9 +67,9 @@ const ForCleaners = () => {
   const requirements = [
     "Must be 18+ years old",
     "Own transportation to job sites",
-    "Basic cleaning supplies (we can provide starter kit)",
+    "Basic cleaning supplies (either bring your own or the customer will provide them)",
     "Smartphone with GPS capability",
-    "Valid South African ID",
+    "Valid South African ID or Valid Passport",
     "Clean criminal background check",
     "Professional references (2 minimum)",
     "Basic English communication skills"
@@ -83,12 +83,15 @@ const ForCleaners = () => {
           <img 
             src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
             alt="Sparklean Logo" 
-            className="w-12 h-12 object-contain"
+            className="w-16 h-16 object-contain"
           />
           <span className="text-2xl font-bold text-gray-900">Sparklean</span>
         </div>
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
           <a href="/" className="text-gray-600 hover:text-teal-600">Back to Home</a>
+          <Button onClick={() => navigate('/auth')} variant="outline" className="border-teal-600 text-teal-600 hover:bg-teal-50">
+            Sign In / Login
+          </Button>
           <Button onClick={() => navigate('/auth')} className="bg-teal-600 hover:bg-teal-700 text-white">
             Apply Now
           </Button>
@@ -97,7 +100,7 @@ const ForCleaners = () => {
 
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-6 py-16 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
           Earn Money as a
           <span className="text-teal-600 block">Professional Cleaner</span>
         </h1>
@@ -225,7 +228,7 @@ const ForCleaners = () => {
             <Button 
               size="lg" 
               variant="outline"
-              className="border-white text-white hover:bg-white hover:text-teal-600 px-8 py-4 text-lg"
+              className="border-white text-white hover:bg-white hover:text-teal-600 px-8 py-4 text-lg bg-transparent"
             >
               Contact Support
             </Button>

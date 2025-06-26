@@ -32,7 +32,7 @@ const Hero = () => {
           <img 
             src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
             alt="Sparklean Logo" 
-            className="w-16 h-16 object-contain"
+            className="w-20 h-20 object-contain"
           />
           <span className="text-2xl font-bold text-gray-900">Sparklean</span>
         </div>
@@ -40,7 +40,7 @@ const Hero = () => {
           <a href="/for-cleaners" className="text-gray-600 hover:text-teal-600">For Cleaners</a>
           {user ? (
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {user.email}</span>
+              <span className="text-gray-600">Welcome, {user.user_metadata?.full_name || 'User'}</span>
               <Button onClick={() => navigate('/dashboard')} variant="outline">Dashboard</Button>
             </div>
           ) : (
@@ -78,30 +78,33 @@ const Hero = () => {
           </Button>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl">🧽</span>
+        {/* How It Works Section */}
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-12">How It Works</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">🧽</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Service Selection</h3>
+              <p className="text-gray-600">Choose from various cleaning packages with transparent pricing and flexible scheduling options.</p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Service Selection</h3>
-            <p className="text-gray-600">Choose from various cleaning packages with transparent pricing and flexible scheduling options.</p>
-          </div>
-          
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl">📅</span>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">📅</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Booking</h3>
+              <p className="text-gray-600">Schedule your cleaning in just a few simple steps with instant confirmation and flexible payment options.</p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Booking</h3>
-            <p className="text-gray-600">Schedule your cleaning in just a few simple steps with instant confirmation and flexible payment options.</p>
-          </div>
-          
-          <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <span className="text-3xl">📍</span>
+            
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-3xl">📍</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Live Tracking</h3>
+              <p className="text-gray-600">Track your cleaner's location and service progress in real-time with ETA updates and arrival alerts.</p>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">Live Tracking</h3>
-            <p className="text-gray-600">Track your cleaner's location and service progress in real-time with ETA updates and arrival alerts.</p>
           </div>
         </div>
       </div>

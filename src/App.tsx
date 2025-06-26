@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
+import Services from "./pages/Services";
 import AuthPage from "./components/AuthPage";
 import ForCleaners from "./pages/ForCleaners";
 import Dashboard from "./components/Dashboard";
@@ -25,6 +26,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/services" element={<Services />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/for-cleaners" element={<ForCleaners />} />
             <Route path="/dashboard" element={<Dashboard />} />
