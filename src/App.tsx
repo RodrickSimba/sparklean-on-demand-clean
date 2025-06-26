@@ -13,6 +13,7 @@ import Dashboard from "./components/Dashboard";
 import CleanerDashboard from "./components/CleanerDashboard";
 import PaymentPage from "./components/PaymentPage";
 import NotificationCenter from "./components/NotificationCenter";
+import CleanerRoleSetup from "./components/CleanerRoleSetup";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/for-cleaners" element={<ForCleaners />} />
+            <Route path="/cleaner-setup" element={<CleanerRoleSetup />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/cleaner-dashboard" element={<CleanerDashboard />} />
             <Route path="/payments" element={<PaymentPage />} />

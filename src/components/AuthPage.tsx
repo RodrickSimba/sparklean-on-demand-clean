@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import RoleSelection from './RoleSelection';
+import CleanerRoleSetup from './CleanerRoleSetup';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -17,10 +18,14 @@ const AuthPage = () => {
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [showRoleSelection, setShowRoleSelection] = useState(false);
+  const [showCleanerSetup, setShowCleanerSetup] = useState(false);
   
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+
+  const redirectTo = location.state?.redirectTo;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +45,12 @@ const AuthPage = () => {
             title: "Welcome back!",
             description: "You've been signed in successfully.",
           });
-          navigate('/');
+          
+          if (redirectTo === '/cleaner-setup') {
+            navigate('/cleaner-dashboard');
+          } else {
+            navigate('/');
+          }
         }
       } else {
         const { error } = await signUp(email, password, fullName);
@@ -51,10 +61,14 @@ const AuthPage = () => {
             variant: "destructive",
           });
         } else {
-          setShowRoleSelection(true);
+          if (redirectTo === '/cleaner-setup') {
+            setShowCleanerSetup(true);
+          } else {
+            setShowRoleSelection(true);
+          }
           toast({
             title: "Account created!",
-            description: "Please select your role to continue.",
+            description: redirectTo === '/cleaner-setup' ? "Setting up your cleaner profile..." : "Please select your role to continue.",
           });
         }
       }
@@ -69,6 +83,10 @@ const AuthPage = () => {
     }
   };
 
+  if (showCleanerSetup) {
+    return <CleanerRoleSetup />;
+  }
+
   if (showRoleSelection) {
     return <RoleSelection />;
   }
@@ -81,15 +99,21 @@ const AuthPage = () => {
             <img 
               src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
               alt="Sparklean Logo" 
-              className="w-16 h-16 object-contain"
+              className="w-20 h-20 object-contain"
             />
             <span className="text-2xl font-bold text-gray-900">Sparklean</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            {isLogin ? 'Welcome back' : 'Create account'}
+            {redirectTo === '/cleaner-setup' 
+              ? (isLogin ? 'Cleaner Sign In' : 'Join as a Cleaner') 
+              : (isLogin ? 'Welcome back' : 'Create account')
+            }
           </h1>
           <p className="text-gray-600">
-            {isLogin ? 'Sign in to your account' : 'Sign up to get started'}
+            {redirectTo === '/cleaner-setup' 
+              ? (isLogin ? 'Sign in to your cleaner account' : 'Start your cleaning business with us')
+              : (isLogin ? 'Sign in to your account' : 'Sign up to get started')
+            }
           </p>
         </div>
 

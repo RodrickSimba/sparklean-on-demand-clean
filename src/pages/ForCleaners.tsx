@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -83,16 +82,29 @@ const ForCleaners = () => {
           <img 
             src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
             alt="Sparklean Logo" 
-            className="w-16 h-16 object-contain"
+            className="w-20 h-20 object-contain"
           />
           <span className="text-2xl font-bold text-gray-900">Sparklean</span>
         </div>
         <div className="flex items-center space-x-4">
-          <a href="/" className="text-gray-600 hover:text-teal-600">Back to Home</a>
-          <Button onClick={() => navigate('/auth')} variant="outline" className="border-teal-600 text-teal-600 hover:bg-teal-50">
+          <Button 
+            onClick={() => navigate('/')}
+            variant="ghost" 
+            className="text-gray-600 hover:text-teal-600"
+          >
+            Back to Home
+          </Button>
+          <Button 
+            onClick={() => navigate('/auth', { state: { redirectTo: '/cleaner-setup' } })} 
+            variant="outline" 
+            className="border-teal-600 text-teal-600 hover:bg-teal-50"
+          >
             Sign In / Login
           </Button>
-          <Button onClick={() => navigate('/auth')} className="bg-teal-600 hover:bg-teal-700 text-white">
+          <Button 
+            onClick={() => navigate('/auth', { state: { redirectTo: '/cleaner-setup' } })} 
+            className="bg-teal-600 hover:bg-teal-700 text-white"
+          >
             Apply Now
           </Button>
         </div>
@@ -198,12 +210,38 @@ const ForCleaners = () => {
           
           <Card className="p-8">
             <div className="grid md:grid-cols-2 gap-4">
-              {requirements.map((requirement, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
-                  <span className="text-gray-700">{requirement}</span>
-                </div>
-              ))}
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Must be 18+ years old</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Own transportation to job sites</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Basic cleaning supplies (either bring your own or the customer will provide them)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Smartphone with GPS capability</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Valid South African ID or Valid Passport</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Clean criminal background check</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Professional references (2 minimum)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 bg-teal-600 rounded-full flex-shrink-0" />
+                <span className="text-gray-700">Basic English communication skills</span>
+              </div>
             </div>
           </Card>
         </div>
@@ -221,7 +259,7 @@ const ForCleaners = () => {
               size="lg" 
               variant="secondary"
               className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-4 text-lg"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/auth', { state: { redirectTo: '/cleaner-setup' } })}
             >
               Apply Now - It's Free
             </Button>
