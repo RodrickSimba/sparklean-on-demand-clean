@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Check, ArrowLeft } from 'lucide-react';
+import { Check } from 'lucide-react';
+import BackButton from '@/components/BackButton';
 
 const Services = () => {
   const navigate = useNavigate();
@@ -107,7 +108,7 @@ const Services = () => {
     ]
   };
 
-  const renderServiceCards = (serviceList: any[], icon: string) => (
+  const renderServiceCards = (serviceList: any[]) => (
     <div className="grid md:grid-cols-2 gap-6 mb-12">
       {serviceList.map((service, index) => (
         <Card key={index} className="bg-white border-gray-200 p-6 hover:shadow-lg transition-shadow">
@@ -142,13 +143,7 @@ const Services = () => {
       {/* Navigation */}
       <nav className="flex items-center justify-between p-6 max-w-6xl mx-auto">
         <div className="flex items-center space-x-4">
-          <Button 
-            onClick={() => navigate(-1)} 
-            variant="ghost" 
-            className="text-teal-600 hover:text-teal-700 p-2"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
+          <BackButton />
           <div className="flex items-center space-x-3">
             <img 
               src="/lovable-uploads/8b7d38d6-4431-439d-abaf-81097dfd8444.png" 
@@ -181,40 +176,120 @@ const Services = () => {
           </p>
         </div>
 
+        {/* Service Categories Overview */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {/* Residential Cleaning */}
+          <Card className="bg-white border-gray-200 p-8 hover:shadow-lg transition-shadow text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+              <img 
+                src="/lovable-uploads/8f3542e3-961f-4bef-9561-90ea784cbca1.png" 
+                alt="Residential Cleaning" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Residential Cleaning</h3>
+            <p className="text-gray-600 mb-6">Professional home cleaning services for a spotless living space</p>
+            <Button 
+              onClick={() => document.getElementById('residential-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-teal-600 hover:bg-teal-700 text-white w-full py-3 text-lg"
+            >
+              Learn More
+            </Button>
+          </Card>
+
+          {/* Commercial Cleaning */}
+          <Card className="bg-white border-gray-200 p-8 hover:shadow-lg transition-shadow text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+              <img 
+                src="/lovable-uploads/231994cf-ecbd-43a9-b127-940919a8ef5a.png" 
+                alt="Commercial Cleaning" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Commercial Cleaning</h3>
+            <p className="text-gray-600 mb-6">Office and business cleaning solutions to maintain professional environments</p>
+            <Button 
+              onClick={() => document.getElementById('commercial-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-teal-600 hover:bg-teal-700 text-white w-full py-3 text-lg"
+            >
+              Learn More
+            </Button>
+          </Card>
+
+          {/* Specialized Cleaning */}
+          <Card className="bg-white border-gray-200 p-8 hover:shadow-lg transition-shadow text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+              <img 
+                src="/lovable-uploads/34c8310e-ba6e-4177-8df8-92be3e43d0e1.png" 
+                alt="Specialized Cleaning" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Specialized Cleaning</h3>
+            <p className="text-gray-600 mb-6">Expert carpet, upholstery, and deep cleaning services</p>
+            <Button 
+              onClick={() => document.getElementById('specialized-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-teal-600 hover:bg-teal-700 text-white w-full py-3 text-lg"
+            >
+              Learn More
+            </Button>
+          </Card>
+        </div>
+
+        {/* Detailed Services Sections */}
+        
         {/* Residential Cleaning */}
-        <div className="mb-16">
+        <div id="residential-section" className="mb-16">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <span className="text-4xl mr-3">🏠</span>
+              <div className="w-16 h-16 mr-4 rounded-full overflow-hidden">
+                <img 
+                  src="/lovable-uploads/8f3542e3-961f-4bef-9561-90ea784cbca1.png" 
+                  alt="Residential Cleaning" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h2 className="text-3xl font-bold text-gray-900">Residential Cleaning</h2>
             </div>
             <p className="text-gray-600">Professional home cleaning services for a spotless living space</p>
           </div>
-          {renderServiceCards(services.residential, '🏠')}
+          {renderServiceCards(services.residential)}
         </div>
 
         {/* Commercial Cleaning */}
-        <div className="mb-16">
+        <div id="commercial-section" className="mb-16">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <span className="text-4xl mr-3">🏢</span>
+              <div className="w-16 h-16 mr-4 rounded-full overflow-hidden">
+                <img 
+                  src="/lovable-uploads/231994cf-ecbd-43a9-b127-940919a8ef5a.png" 
+                  alt="Commercial Cleaning" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h2 className="text-3xl font-bold text-gray-900">Commercial Cleaning</h2>
             </div>
             <p className="text-gray-600">Office and business cleaning solutions to maintain professional environments</p>
           </div>
-          {renderServiceCards(services.commercial, '🏢')}
+          {renderServiceCards(services.commercial)}
         </div>
 
         {/* Specialized Cleaning */}
-        <div className="mb-16">
+        <div id="specialized-section" className="mb-16">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <span className="text-4xl mr-3">🧽</span>
+              <div className="w-16 h-16 mr-4 rounded-full overflow-hidden">
+                <img 
+                  src="/lovable-uploads/34c8310e-ba6e-4177-8df8-92be3e43d0e1.png" 
+                  alt="Specialized Cleaning" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <h2 className="text-3xl font-bold text-gray-900">Specialized Cleaning Services</h2>
             </div>
             <p className="text-gray-600">Expert carpet, upholstery, and deep cleaning services</p>
           </div>
-          {renderServiceCards(services.specialized, '🧽')}
+          {renderServiceCards(services.specialized)}
         </div>
       </div>
     </div>
